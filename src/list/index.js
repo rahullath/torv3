@@ -1,4 +1,4 @@
-export const navList = ['Films & TV ', 'Broadcasts ', ' Waitlist'];
+export const navList = ['Films', 'TV', ' Waitlist'];
 
 export const namesList = ['Alice', 'Bob', 'Charlie', 'David', 'Emily', 'Frank', 'Greta', 'Henry', 'Ivy', 'Jack', 'Karen', 'Liam', 'Mia', 'Nina', 'Olivia', 'Paul', 'Quinn', 'Rose', 'Sam', 'Tina', 'Ursula', 'Violet', 'Will', 'Xander', 'Yvonne', 'Zach', 'Maxim', 'Arsen', 'Wednesday', 'Mark', 'Aibek', 'Eiden'];
 

@@ -4,7 +4,7 @@ import ProfilePage from '../components/pages/ProfilePage/ProfilePage';
 import ViewStreamPage from '../components/pages/ViewStreamPage/ViewStreamPage';
 
 const UnavailableMessage = () => {
-    return <h1>Current page is unavailable</h1>;
+    return <h1>Features coming soon.....</h1>;
 };
 
 export const privateRoutes = [
