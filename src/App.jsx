@@ -10,7 +10,7 @@ import AppRouter from './AppRouter';
 
 const livePeerClient = createReactClient({
     provider: studioProvider({
-        apiKey: 'd717db73-99bc-49c2-ba40-e2cc146030f7',
+        apiKey: '62d6b4e4-03d3-4b33-b20a-377e64a4a2ae',
     }),
 });
 

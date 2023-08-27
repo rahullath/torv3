@@ -20,6 +20,6 @@ if (window.ethereum) {
         </ThemeProvider>
     );
 } else {
-    alert('install metamask extension!!')
+    alert('To use the website, Please activate the metamask extension')
 }
 
