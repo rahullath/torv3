@@ -1,17 +1,26 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import css from './Navbar.module.scss';
-import { navList } from '../../../../list';
 
 const Navbar = () => {
+    // Define your navigation items here
+    const navItems = [
+        { name: 'Home', path: '/' },
+        { name: 'Films', path: '/films' },
+        { name: 'TV', path: '/television' },
+        { name: 'Upload2Torv', path: '/p2p' }
+        // Add other navigation items if needed
+    ];
+
     return (
         <nav className={css.ContainerBlock}>
-            {navList.map((listItem) => (
+            {navItems.map(item => (
                 <NavLink
-                    to='/'
-                    key={listItem}
+                    to={item.path}
+                    key={item.name}
+                    className={({ isActive }) => isActive ? css.activeLink : ''}
                 >
-                    {listItem}
+                    {item.name}
                 </NavLink>
             ))}
         </nav>

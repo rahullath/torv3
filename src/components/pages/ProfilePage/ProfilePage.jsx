@@ -1,8 +1,4 @@
-import React, {
-    useEffect,
-    useState
-} from 'react';
-import API from '../../../api/index';
+import React, { useEffect, useState } from 'react';
 import ThreeDotsLoader from '../../ui/loaders/ThreeDotsLoader/ThreeDotsLoader';
 import css from './ProfilePage.module.scss';
 import MetaMaskLogo from '../../../assets/webp/metamask-2728406-2261817.webp';
@@ -16,52 +12,47 @@ const ProfilePage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function fetchData() {
-            const resBalance = await API.get(`/token/balanceOfAddress/${walletAddress}`);
-            setUserBalance(resBalance.data.balance / 10 ** 18);
-        }
-
-        fetchData()
-            .then()
-            .catch(error => {
+        const fetchData = async () => {
+            try {
+                // Modify the API endpoint as needed to pass the wallet address
+                const response = await fetch(`http://localhost:3001/api/get-profile/${walletAddress}`);
+                const data = await response.json();
+                setUserBalance(data.balance);
+                // Set other user data as needed
+            } catch (error) {
+                console.error('Failed to fetch profile:', error);
                 setError(error);
-            });
-    }, [walletAddress]);
+            }
+        };
+    
+        if (walletAddress) {
+            fetchData();
+        }
+    }, [walletAddress]); // Dependency on walletAddress
 
-    function handleAddressVisible() {
-        if (isAddressVisible === false) {
-            setIsAddressVisible(true);
-        }
-        if (isAddressVisible === true) {
-            setIsAddressVisible(false);
-        }
-    }
+    const handleAddressVisible = () => {
+        setIsAddressVisible(!isAddressVisible);
+    };
 
     if (error) {
-        return <h1>{error.message}</h1>
-    } else if (!userBalance && userBalance !== 0) {
-        return (
-            <section className={css.ContainerBlock}>
-                <ThreeDotsLoader />
-            </section>
-        )
+        return <h1>Error: {error.message}</h1>;
+    }
+
+    if (userBalance === null) {
+        return <ThreeDotsLoader />;
     }
 
     return (
         <section className={css.ContainerBlock}>
-            <img
-                src={MetaMaskLogo}
-                alt='METAMASK LOGO'
-            />
+            <img src={MetaMaskLogo} alt='METAMASK LOGO' />
             <h3>
-                Your Balance: {userBalance} STN <STNIcon/>
-            </h3>
+                Your Balance: {userBalance} STN <STNIcon />
+            </h3>   
             <h3>
                 Wallet Address: {isAddressVisible ? walletAddress : ''}
-                <Button
-                    variant='outlined'
-                    onClick={handleAddressVisible}
-                >{isAddressVisible ? 'Hide' : 'Show'} the address</Button>
+                <Button variant='outlined' onClick={handleAddressVisible}>
+                    {isAddressVisible ? 'Hide' : 'Show'} the address
+                </Button>
             </h3>
         </section>
     );

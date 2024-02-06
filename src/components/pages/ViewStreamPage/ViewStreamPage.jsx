@@ -1,79 +1,35 @@
-import React, {
-    useEffect,
-    useState
-} from 'react';
-import { useParams } from "react-router-dom";
-import {
-    Player,
-    useStream
-} from "@livepeer/react";
+import React from 'react';
 import css from './ViewStreamPage.module.scss';
-import API from '../../../api';
 import ThreeDotsLoader from '../../ui/loaders/ThreeDotsLoader/ThreeDotsLoader';
-import { Button } from '@mui/material';
 
 const ViewStreamPage = () => {
-    const { streamID } = useParams();
-    const streamData = useStream({
-        streamId       : streamID,
-        refetchInterval: (stream) => (!stream?.isActive ? 5000 : false),
-    });
+    // Directly using the local IPFS gateway URL
+    const videoUrl = 'http://127.0.0.1:8080/ipfs/QmPXtEZvuiiwGDEZCf5EvQBNWrjgL464xUD9wq3zUgaVPt';
 
-    const [stream, setStream] = useState([]);
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await API.get('/ipfs/getStreams');
-                setStream(res.data.filter(item => item.streamId === streamID)[0]);
-                console.log(res.data);
-            } catch (e) {
-                console.log(e)
-            }
-        }
-
-        fetchData().then();
-
-        const timer = new Date();
-
-        return () => {
-            const d = (new Date() - timer) / 1000 / 60;
-            const time = localStorage.getItem('time') ? +localStorage.getItem('time') + d : d;
-            localStorage.setItem("time", time);
-        }
-
-    }, []);
-
-    if (!stream) {
-        return <ThreeDotsLoader />
-    }
     return (
         <section className={css.ContainerBlock}>
-            {streamData.data?.playbackId && (
-                <Player
-                    title={streamData.data?.name}
-                    playbackId={streamData.data?.playbackId}
-                    autoPlay
-                    muted
-                />
-            )}
+            {!videoUrl ? (
+                <ThreeDotsLoader />
+            ) : (
+                <>
+                    <div className={css.VideoTitle}>
+                        <h1>Video Title</h1>
+                    </div>
+                    <video src={videoUrl} controls autoPlay className={css.VideoPlayer} />
 
-            <div>
-                <h2 className='secondary-light-color'>[{stream.streamCategory}]</h2>
-                <h1>{stream.streamName}</h1>
-            </div>
-            <div>
-                <h2 className='secondary-light-color'>Description</h2>
-                <h3> {stream.streamDescription}</h3>
-            </div>
-            <div>
-                <Button
-                    variant='outlined'
-                    color='primary'
-                >
-                    Notify about inappropriate content
-                </Button>
-            </div>
+                    <div className={css.VideoDescription}>
+                        <p>
+                            This is a description of the video. It can contain details about the video content, source, or any other relevant information.
+                        </p>
+                    </div>
+
+                    <div className={css.VideoControls}>
+                        <button onClick={() => console.log('Button clicked!')}>
+                            Example Button
+                        </button>
+                    </div>
+                </>
+            )}
         </section>
     );
 };
