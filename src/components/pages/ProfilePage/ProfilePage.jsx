@@ -6,7 +6,7 @@ import { ReactComponent as STNIcon } from '../../../assets/svg/STNLogo.svg';
 import { Button } from '@mui/material';
 
 const ProfilePage = () => {
-    const [userBalance, setUserBalance] = useState(null);
+    const [userProfile, setUserProfile] = useState(null);
     const [isAddressVisible, setIsAddressVisible] = useState(false);
     const walletAddress = localStorage.getItem('address');
     const [error, setError] = useState(null);
@@ -14,31 +14,32 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Modify the API endpoint as needed to pass the wallet address
                 const response = await fetch(`http://localhost:3001/api/get-profile/${walletAddress}`);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
                 const data = await response.json();
-                setUserBalance(data.balance);
-                // Set other user data as needed
+                setUserProfile(data); // Assuming the response contains more than just the balance
             } catch (error) {
                 console.error('Failed to fetch profile:', error);
-                setError(error);
+                setError(error.toString());
             }
         };
-    
+
         if (walletAddress) {
             fetchData();
         }
-    }, [walletAddress]); // Dependency on walletAddress
+    }, [walletAddress]);
 
     const handleAddressVisible = () => {
         setIsAddressVisible(!isAddressVisible);
     };
 
     if (error) {
-        return <h1>Error: {error.message}</h1>;
+        return <h1>Error: {error}</h1>;
     }
 
-    if (userBalance === null) {
+    if (!userProfile) {
         return <ThreeDotsLoader />;
     }
 
@@ -46,8 +47,8 @@ const ProfilePage = () => {
         <section className={css.ContainerBlock}>
             <img src={MetaMaskLogo} alt='METAMASK LOGO' />
             <h3>
-                Your Balance: {userBalance} STN <STNIcon />
-            </h3>   
+                Your Balance: {userProfile.balance} STN <STNIcon />
+            </h3>
             <h3>
                 Wallet Address: {isAddressVisible ? walletAddress : ''}
                 <Button variant='outlined' onClick={handleAddressVisible}>
