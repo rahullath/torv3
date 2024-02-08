@@ -14,7 +14,9 @@ const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://torvy.netlify.app' // Adjust this to match your frontend's domain
+}));
 app.use(express.json()); // for parsing application/json
 
 let profileDb; // This will hold our OrbitDB instance
