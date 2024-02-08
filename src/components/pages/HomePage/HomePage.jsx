@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import 'C:/Users/rahul/torv3/src/styles/index.css'; // Importing general styles
+import '../../../styles/index.css';
 import { fetchMovies } from '../../../api/tmdbService'; // Adjusted import path
 
 const HomePage = () => {
